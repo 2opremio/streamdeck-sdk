@@ -73,6 +73,15 @@ func (s *StreamDeck) SetFeedbackLayout(context string, layout string) {
 	}
 }
 
+// SendToPropertyInspector sends a payload to the property inspector for an action instance.
+func (s *StreamDeck) SendToPropertyInspector(context string, payload map[string]interface{}) {
+	s.writeCh <- &SendEvent{
+		Event:   SendToPropertyInspector,
+		Context: context,
+		Payload: payload,
+	}
+}
+
 // SetSettings change the settings of an action with given context.
 func (s *StreamDeck) SetSettings(context string, settings map[string]interface{}) {
 	s.writeCh <- &SendEvent{
