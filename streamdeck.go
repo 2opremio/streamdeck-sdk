@@ -137,6 +137,9 @@ func (s *StreamDeck) reader(ctx context.Context) {
 		default:
 			var event ReceivedEvent
 			if err := s.conn.ReadJSON(&event); err != nil {
+				if websocket.IsCloseError(err, websocket.CloseNormalClosure) {
+					return
+				}
 				if websocket.IsUnexpectedCloseError(err, websocket.CloseGoingAway, websocket.CloseAbnormalClosure) {
 					s.reportError(fmt.Errorf("unexpected close connection: %w", err))
 					return
